@@ -45,6 +45,7 @@
     useCurrentVal : true,
     display       : 'name',
     defaultTriggerChar  : '',
+    defaultClosingChar  : '',
     onCaret       : false,
     classes       : {
       autoCompleteItemActive : "active"
@@ -341,7 +342,7 @@
 
       // Filter items that has already been mentioned
       var mentionValues = _.pluck(mentionsCollection, 'id');
-      var triggerChar = '';
+      var triggerChar = '',closingChar='';
       results = _.reject(results, function (item) {
         return _.include(mentionValues, item.id);
       });
@@ -358,8 +359,8 @@
         var itemUid = _.uniqueId('mention_');
 
         triggerChar = item.trigger ? item.trigger : settings.defaultTriggerChar;
-        autocompleteItemCollection[itemUid] = _.extend({}, item, {value: triggerChar+item.name});
-
+        closingChar = item.closing ? item.closing : settings.defaultClosingChar;
+        autocompleteItemCollection[itemUid] = _.extend({}, item, {value: triggerChar+item.name+closingChar});
         var elmListItem = $(settings.templates.autocompleteListItem({
           'id'      : utils.htmlEncode(item.id),
           'display' : utils.htmlEncode(item[settings.display]),
