@@ -39,6 +39,7 @@
     triggerChar   : '@',
     onDataRequest : $.noop,
     minChars      : 2,
+    trim          : false,
     showAvatars   : true,
     elastic       : true,
     useCurrentVal : true,
@@ -86,6 +87,9 @@
     },
     rtrim: function(string) {
       return string.replace(/\s+$/,"");
+    },
+    trim:function(string){
+      return string.trim();
     }
   };
 
@@ -237,7 +241,7 @@
       var triggerCharIndex = _.lastIndexOf(inputBuffer, triggerChar);
       if (triggerCharIndex > -1) {
         currentDataQuery = inputBuffer.slice(triggerCharIndex + 1).join('');
-        currentDataQuery = utils.rtrim(currentDataQuery);
+        currentDataQuery = settings.trim ? utils.trim(currentDataQuery) : utils.rtrim(currentDataQuery);
         _.defer(_.bind(doSearch, this, currentDataQuery, triggerChar));
       }
     }
@@ -280,7 +284,7 @@
 
       if (e.keyCode == KEY.BACKSPACE) {
         inputBuffer = inputBuffer.slice(0, -1 + inputBuffer.length); // Can't use splice, not available in IE
-        return;
+	return;
       }
 
       if (!elmAutocompleteList.is(':visible')) {
