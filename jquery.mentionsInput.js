@@ -58,7 +58,7 @@
       autocompleteListItemIcon   : _.template('<div class="icon <%= icon %>"></div>'),
       mentionsOverlay            : _.template('<div class="mentions"><div></div></div>'),
       mentionItemSyntax          : _.template('[<%= value %>](<%= type %>:<%= id %>)'),
-      mentionItemHighlight       : _.template('<strong><span><%= value %></span></strong>')
+      mentionItemHighlight       : _.template('<select><option><%= value %></option></select>')
     }
   };
 
@@ -363,7 +363,7 @@
         autocompleteItemCollection[itemUid] = _.extend({}, item, {value: triggerChar+item.name+closingChar});
         var elmListItem = $(settings.templates.autocompleteListItem({
           'id'      : utils.htmlEncode(item.id),
-          'display' : utils.htmlEncode(item[settings.display]),
+          'display' : utils.highlightTerm(utils.htmlEncode((item.name)), query),
           'type'    : utils.htmlEncode(item.type),
           'content' : utils.highlightTerm(utils.htmlEncode((item.name)), query)
         })).attr('data-uid', itemUid);
