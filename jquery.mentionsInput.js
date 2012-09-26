@@ -58,7 +58,7 @@
       autocompleteListItemIcon   : _.template('<div class="icon <%= icon %>"></div>'),
       mentionsOverlay            : _.template('<div class="mentions"><div></div></div>'),
       mentionItemSyntax          : _.template('[<%= value %>](<%= type %>:<%= id %>)'),
-      mentionItemHighlight       : _.template('<select><option><%= value %></option></select>')
+      mentionItemHighlight       : _.template('<span><strong><%= value %></strong></span>')
     }
   };
 
