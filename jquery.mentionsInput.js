@@ -6,6 +6,7 @@
  *
  * From: https://github.com/dtime/jquery-mentions-input
  * Using underscore.js
+ * Using need jquery carret https://github.com/DrPheltRight/jquery-caret
  *
  * License: MIT License - http://www.opensource.org/licenses/mit-license.php
  */
@@ -191,10 +192,11 @@
 
       // Using a regex to figure out positions
       var regex = new RegExp("\\" + currentTriggerChar + currentDataQuery, "gi");
+      regex.lastIndex = getInputBoxCarret()-currentDataQuery.length-1;
       regex.exec(currentMessage);
 
-      var startCaretPosition = regex.lastIndex - currentDataQuery.length - 1;
-      var currentCaretPosition = regex.lastIndex;
+      var startCaretPosition = getInputBoxCarret() - currentDataQuery.length - 1;
+      var currentCaretPosition = getInputBoxCarret();
 
       var start = currentMessage.substr(0, startCaretPosition);
       var end = currentMessage.substr(currentCaretPosition, currentMessage.length);
@@ -218,8 +220,13 @@
     }
 
     function getInputBoxValue() {
-      return $.trim(elmInputBox.val());
+      return elmInputBox.val();
     }
+
+    function getInputBoxCarret() {
+      return elmInputBox.caret();
+    }
+
 
     function onAutoCompleteItemClick(e) {
       var elmTarget = $(this);
