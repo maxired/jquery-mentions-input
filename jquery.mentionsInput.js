@@ -3,8 +3,9 @@
  * Version 1.0.3.dtime
  * Written by: Kenneth Auchenberg (Podio)
  * Forked  by: David Haslem (dtime, inc.)
+ * Forked  by: Maxired
  *
- * From: https://github.com/dtime/jquery-mentions-input
+ * From: https://github.com/maxired/jquery-mentions-input
  * Using underscore.js
  * Using need jquery carret https://github.com/DrPheltRight/jquery-caret
  *
@@ -47,6 +48,7 @@
     display       : 'name',
     defaultTriggerChar  : '',
     defaultClosingChar  : '',
+    defaultMoveCarat     : 0,
     onCaret       : false,
     classes       : {
       autoCompleteItemActive : "active"
@@ -216,7 +218,8 @@
 
       // Set correct focus and selection
       elmInputBox.focus();
-      utils.setCaratPosition(elmInputBox[0], startEndIndex);
+      
+      utils.setCaratPosition(elmInputBox[0], startEndIndex + (+mention.moveCarat) );
     }
 
     function getInputBoxValue() {
@@ -367,7 +370,11 @@
 
         triggerChar = item.trigger ? item.trigger : settings.defaultTriggerChar;
         closingChar = item.closing ? item.closing : settings.defaultClosingChar;
-        autocompleteItemCollection[itemUid] = _.extend({}, item, {value: triggerChar+item.name+closingChar});
+        moveCarat = item.moveCarat ? item.moveCarat : settings.defaultMoveCarat;
+
+        autocompleteItemCollection[itemUid] = _.extend({
+          'moveCarat' : utils.htmlEncode(moveCarat)
+        }, item, {value: triggerChar+item.name+closingChar});
         var elmListItem = $(settings.templates.autocompleteListItem({
           'id'      : utils.htmlEncode(item.id),
           'display' : utils.highlightTerm(utils.htmlEncode((item.name)), query),
