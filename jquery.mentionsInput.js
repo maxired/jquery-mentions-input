@@ -196,7 +196,6 @@
 
           // syntaxMessage = syntaxMessage.replace(reg, textSyntax);
         });
-        console.log(syntaxMessage)
         var mentionText = utils.htmlEncode(syntaxMessage);
 
         _.each(mentionsCollection, function(mention) {
