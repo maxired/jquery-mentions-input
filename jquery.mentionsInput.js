@@ -141,6 +141,7 @@
         elmInputBox.bind('input', onInputBoxInput);
         elmInputBox.bind('click', onInputBoxClick);
         elmInputBox.bind('blur', onInputBoxBlur);
+        elmInputBox.bind('focus', onEmptyFocus);
 
         // Elastic textareas, internal setting for the Dispora guys
         if (settings.elastic) {
@@ -179,7 +180,7 @@
 
           var mystring = tmpMention.trigger + tmpMention.name
           var simple = new RegExp(escape(mystring), "g");
-          
+
           for (simple.exec(syntaxMessage); simple.lastIndex !== null; simple.exec(syntaxMessage)) {
             if (simple.lastIndex !== null) {
               if (syntaxMessage[simple.lastIndex] === "]" && syntaxMessage[simple.lastIndex - mystring.length - 1] === "[") {
@@ -308,6 +309,15 @@
 
         if (matchedChar) {
           checkTriggerChar(inputBuffer, matchedChar);
+        }
+      }
+
+      function onEmptyFocus() {
+        if (elmInputBox.val().length === 0) {
+          updateValues();
+          updateMentionsCollection();
+          hideAutoComplete();
+          _.defer(_.bind(doSearch, this, '', ''));
         }
       }
 
@@ -454,7 +464,7 @@
       }
 
       function doSearch(query, triggerChar) {
-        if (query && query.length && query.length >= settings.minChars) {
+        if ((typeof query === 'string') && (typeof query.length !== "undefined") && query.length >= settings.minChars) {
           settings.onDataRequest.call(this, 'search', query, function(responseData) {
             populateDropdown(query, responseData);
           }, triggerChar);
