@@ -217,6 +217,7 @@
       }
 
       function resetBuffer() {
+        console.log("reset")
         inputBuffer = [];
       }
 
@@ -283,7 +284,12 @@
       }
 
       function onInputBoxClick(e) {
-        resetBuffer();
+        if (elmInputBox.val() === " ") {
+          inputBuffer = [' '];  
+        } else {
+          resetBuffer();
+          hideAutoComplete()
+        }
       }
 
       function onInputBoxBlur(e) {
@@ -314,10 +320,12 @@
 
       function onEmptyFocus() {
         if (elmInputBox.val().length === 0) {
+          elmInputBox.val(' ');
           updateValues();
           updateMentionsCollection();
           hideAutoComplete();
-          _.defer(_.bind(doSearch, this, '', ''));
+          inputBuffer = [' '];
+          checkTriggerChar(inputBuffer, ' ');
         }
       }
 
